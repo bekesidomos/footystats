@@ -4,6 +4,7 @@ import { routes } from './app.routes';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 // firebase
 import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app'; 
@@ -21,16 +22,7 @@ export const appConfig: ApplicationConfig = {
       useValue: { appearance: 'outline' }
     },
 
-    provideFirebaseApp(() =>
-      initializeApp({
-        apiKey: "AIzaSyBF8wTaUkn3CkJpzOvnJOZR14l8kWcxOI4",
-        authDomain: "footystats-pwa.firebaseapp.com",
-        projectId: "footystats-pwa",
-        storageBucket: "footystats-pwa.firebasestorage.app",
-        messagingSenderId: "148929953078",
-        appId: "1:148929953078:web:515fca1c49c5895dbb8797"
-      })
-    ),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
 
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore(getApp())),
