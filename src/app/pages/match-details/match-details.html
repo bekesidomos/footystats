@@ -1,0 +1,174 @@
+<div class="details-container">
+  
+  <button mat-icon-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  @if (isLoading) {
+    <div class="loading">Loading match details...</div>
+  } @else if (match) {
+    
+    <mat-card class="score-card mat-elevation-z3">
+      <mat-card-content>
+        
+        <div class="league-header">
+          @if (match.competition?.area?.flag) {
+            <img [src]="match.competition.area.flag" width="20" alt="flag" style="margin-right: 8px;">
+          }
+          <span>{{ match.competition?.name }} - MD {{ match.matchday }}</span>
+        </div>
+
+        <div class="scoreboard">
+          <div class="team home">
+            @if (match.homeTeam?.crest) {
+              <img [src]="match.homeTeam.crest" class="big-crest" alt="Home Crest">
+            }
+            <h2>{{ match.homeTeam?.name }}</h2>
+          </div>
+
+          <div class="score-info">
+            @if (match.status === 'FINISHED' || match.status === 'IN_PLAY' || match.status === 'PAUSED') {
+              <div class="big-score" 
+                   appHighlightWinner 
+                   [scoreHome]="match.score?.fullTime?.home ?? 0" 
+                   [scoreAway]="match.score?.fullTime?.away ?? 0">
+                {{ match.score?.fullTime?.home ?? 0 }} - {{ match.score?.fullTime?.away ?? 0 }}
+              </div>
+              <span class="status">{{ match.status | statusTranslate }}</span>
+            } @else {
+              <div class="big-time">
+                {{ match.utcDate | date:'HH:mm' }}
+              </div>
+              <span class="date">{{ match.utcDate | date:'yyyy.MM.dd' }}</span>
+            }
+          </div>
+
+          <div class="team away">
+            @if (match.awayTeam?.crest) {
+              <img [src]="match.awayTeam.crest" class="big-crest" alt="Away Crest">
+            }
+            <h2>{{ match.awayTeam?.name }}</h2>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+    @if ((match.status === 'SCHEDULED' || match.status === 'TIMED') || myPrediction) {
+      
+      <mat-card class="prediction-card mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>My Prediction</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          
+          @if (myPrediction && !isPredicting) {
+            <div class="saved-prediction">
+              <p>You predicted:</p>
+              <div class="pred-score">
+                {{ myPrediction.homeScore }} - {{ myPrediction.awayScore }}
+              </div>
+
+              @if (match.status === 'SCHEDULED' || match.status === 'TIMED') {
+                <div class="pred-actions">
+                  <button mat-stroked-button color="primary" (click)="isPredicting = true">Edit</button>
+                  <button mat-icon-button color="warn" (click)="deletePrediction()">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              } @else {
+                <small style="color: var(--mat-sys-error); font-weight: bold;">Betting closed</small>
+              }
+            </div>
+          } 
+          
+          @else if (match.status === 'SCHEDULED' || match.status === 'TIMED') {
+            <div class="prediction-form">
+              <div class="inputs">
+                <mat-form-field appearance="outline" class="score-input">
+                  <mat-label>Home</mat-label>
+                  <input matInput type="number" [(ngModel)]="predHome" min="0">
+                </mat-form-field>
+                
+                <span class="divider">-</span>
+
+                <mat-form-field appearance="outline" class="score-input">
+                  <mat-label>Away</mat-label>
+                  <input matInput type="number" [(ngModel)]="predAway" min="0">
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                @if (isPredicting && myPrediction) {
+                  <button mat-button (click)="isPredicting = false">Cancel</button>
+                }
+                <button mat-flat-button color="primary" (click)="savePrediction()" 
+                        [disabled]="predHome === null || predAway === null || predHome! < 0 || predAway! < 0">
+                  Save Prediction
+                </button>
+              </div>
+            </div>
+          }
+
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <mat-card class="details-card mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Match Info</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          
+          <div class="info-item">
+            <mat-icon>stadium</mat-icon>
+            <div>
+              <span class="label">Stadium</span> <span class="value">{{ match.venue || 'Unknown Stadium' }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>person</mat-icon>
+            <div>
+              <span class="label">Referee</span>
+              <span class="value">{{ match.referees?.[0]?.name || 'TBA' }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>flag</mat-icon>
+            <div>
+              <span class="label">Status</span>
+              <span class="value">{{ match.status | statusTranslate }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        @if (match.score?.halfTime?.home !== null) {
+          <mat-divider></mat-divider>
+          <div class="halftime-score">
+            <span>Half Time: </span>
+            <strong>{{ match.score.halfTime.home }} - {{ match.score.halfTime.away }}</strong>
+          </div>
+        }
+
+      <mat-divider></mat-divider>
+        
+        <div class="attendance-section">
+          <button mat-fab extended 
+                  [color]="isAttended ? 'primary' : 'basic'" 
+                  (click)="toggleAttendance()">
+            <mat-icon>{{ isAttended ? 'check_circle' : 'location_on' }}</mat-icon>
+            {{ isAttended ? 'I was there!' : 'I was there' }}
+          </button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  } @else {
+    <p>Match not found.</p>
+  }
+</div>

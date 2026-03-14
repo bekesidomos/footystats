@@ -1,0 +1,159 @@
+.add-favourite-form {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--mat-sys-surface-container);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-sizing: border-box;
+
+  mat-form-field {
+    width: 100%; 
+    max-width: 280px; 
+    .mat-mdc-form-field-subscript-wrapper { 
+      display: none; 
+    }
+  }
+
+  button {
+    height: 56px;
+    width: 100%;
+    max-width: 280px; 
+    padding: 0 24px;
+    margin-bottom: 2px; 
+  }
+}
+
+.favourites-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; 
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.fav-list {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .fav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: var(--mat-sys-surface-container-low);
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+
+    &:hover {
+      background: var(--mat-sys-surface-container-high);
+    }
+
+    &.active {
+      border-color: var(--mat-sys-primary);
+      background: var(--mat-sys-secondary-container);
+    }
+  }
+
+  .fav-info {
+    display: flex;
+    flex-direction: column;
+    
+    strong { font-size: 1rem; }
+    .fav-league { font-size: 0.8rem; opacity: 0.7; }
+  }
+}
+
+.matches-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.mini-match-card {
+  padding: 0.5rem;
+  
+  .mini-teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .side {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 40%;
+    
+    span { 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+    }
+  }
+
+  .side.right {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .mini-score {
+    width: 20%;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.empty-text {
+  text-align: center;
+  opacity: 0.6;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .favourites-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .add-favourite-form {
+    flex-direction: column;
+    padding: 1rem;
+    
+  }
+}
+
+.note-card {
+  margin-bottom: 1.5rem;
+  background-color: var(--mat-sys-surface-container-low);
+  
+  .note-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+    color: var(--mat-sys-primary);
+  }
+
+  .note-text {
+    font-style: italic;
+    color: var(--mat-sys-on-surface-variant);
+    margin-bottom: 1rem;
+    white-space: pre-wrap; 
+  }
+
+  .note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}

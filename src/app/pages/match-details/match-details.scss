@@ -1,0 +1,251 @@
+.details-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.back-button {
+  margin-bottom: 1rem;
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-primary);
+}
+
+.score-card {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(180deg, var(--mat-sys-surface-container-high), var(--mat-sys-surface));
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.league-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.team {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+
+  h2 {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.big-crest {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.score-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1rem;
+  min-width: 120px;
+}
+
+.big-score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--mat-sys-primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.big-time {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+}
+
+.status, .date {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status {
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.date {
+  background-color: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.details-card {
+  margin-top: 1rem;
+  
+  mat-card-header {
+    margin-bottom: 1rem;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  mat-icon {
+    color: var(--mat-sys-primary);
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label {
+    font-size: 0.8rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .value {
+    font-weight: 600;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.halftime-score {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  
+  .scoreboard {
+    flex-wrap: nowrap; 
+    gap: 0.5rem; 
+    justify-content: space-between; 
+  }
+
+  .team, .score-info {
+    min-width: 0; 
+    flex: 1; 
+  }
+  
+  .score-info {
+    margin: 0 4px;
+    flex: 0 0 auto;
+  }
+
+  .big-crest {
+    width: 50px;
+    height: 50px;
+  }
+
+  .big-score {
+    font-size: 2rem; 
+    margin-bottom: 0.2rem;
+  }
+
+  .big-time {
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+
+  .team h2 {
+    font-size: 0.9rem; 
+    line-height: 1.2;
+    margin-top: 0.4rem;
+    word-wrap: break-word; 
+    hyphens: auto;
+  }
+}
+
+.prediction-card {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background-color: var(--mat-sys-surface-container-low);
+
+  mat-card-title {
+    font-size: 1.1rem;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.saved-prediction {
+  p { margin: 0 0 0.5rem 0; color: var(--mat-sys-on-surface-variant); }
+  
+  .pred-score {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--mat-sys-on-surface);
+    margin-bottom: 1rem;
+  }
+
+  .pred-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+.prediction-form {
+  .inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .score-input {
+      width: 80px;
+      text-align: center;
+      ::ng-deep input { text-align: center; font-weight: bold; font-size: 1.2rem; }
+      //keine ugly nyilak
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper { display: none; }
+    }
+
+    .divider { font-size: 1.5rem; font-weight: bold; }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+.attendance-section {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}

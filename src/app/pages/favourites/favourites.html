@@ -1,0 +1,131 @@
+<h2>Your Favourite Teams</h2>
+
+<div class="add-favourite-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Select League</mat-label>
+    <mat-select [(ngModel)]="newTeamLeague" (selectionChange)="onLeagueChange($event.value)">
+      @for (league of leagues; track league.code) {
+        <mat-option [value]="league.code">{{ league.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Select Team</mat-label>
+    <mat-select [(ngModel)]="selectedTeam" [disabled]="!newTeamLeague">
+      @for (team of availableTeams; track team.id) {
+        <mat-option [value]="team">
+          <img [src]="team.crest" width="20" height="20" style="margin-right: 8px; vertical-align: middle;">
+          {{ team.name }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" (click)="addFavourite()" [disabled]="!selectedTeam || !newTeamLeague">
+    Add Favourite
+  </button>
+</div>
+
+<hr />
+
+<div class="favourites-layout">
+  
+  <div class="fav-list">
+    <h3>My Teams</h3>
+    <ul>
+      @for (fav of favourites$ | async; track fav.id) {
+        <li 
+          (click)="onSelectFavourite(fav)" 
+          [class.active]="activeFavId() === fav.id"
+          class="fav-item"
+        >
+          <div class="fav-info">
+            <strong>{{ fav.name }}</strong>
+            <span class="fav-league">{{ fav.league }}</span>
+          </div>
+          
+          <button mat-icon-button color="warn" (click)="deleteFavourite(fav.id!); $event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </li>
+      } @empty {
+        <p class="empty-text">No favourites yet.</p>
+      }
+    </ul>
+  </div>
+
+  <div class="fav-matches">
+    
+    @if (activeFavId()) {
+      <mat-card class="note-card mat-elevation-z1">
+        <mat-card-content>
+          <div class="note-header">
+            <mat-icon color="primary">edit_note</mat-icon>
+            <strong>My Note</strong>
+          </div>
+
+          @if (isEditingNote()) {
+            <mat-form-field appearance="outline" style="width: 100%; margin-top: 10px;">
+              <mat-label>Edit Note</mat-label>
+              <textarea matInput [(ngModel)]="currentNote" rows="2"></textarea>
+            </mat-form-field>
+            <div class="note-actions">
+              <button mat-button (click)="cancelEdit()">Cancel</button>
+              <button mat-flat-button color="primary" (click)="saveNote()">Save</button>
+            </div>
+          } @else {
+            <p class="note-text">{{ currentNote || 'No notes added yet.' }}</p>
+            <button mat-stroked-button color="primary" (click)="startEdit()">
+              {{ currentNote ? 'Edit Note' : 'Add Note' }}
+            </button>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <h3>Team Matches</h3>
+    
+    @if (isLoadingMatches) {
+      <p>Loading matches...</p>
+    } @else if (selectedFavMatches.length > 0) {
+      
+      <div class="matches-grid">
+        @for (match of selectedFavMatches; track match.id) {
+          <mat-card class="mini-match-card mat-elevation-z1" [routerLink]="['/match', match.id]" style="cursor: pointer;">
+            <mat-card-content>
+              <div class="mini-teams">
+                <div class="side">
+                  <img [src]="match.homeTeam.crest" width="20">
+                  <span>{{ match.homeTeam.shortName || match.homeTeam.name }}</span>
+                </div>
+                
+                <div class="mini-score">
+                  @if (match.status === 'FINISHED') {
+                    <strong 
+                      appHighlightWinner 
+                      [scoreHome]="match.score.fullTime.home" 
+                      [scoreAway]="match.score.fullTime.away">
+                      {{ match.score.fullTime.home }} - {{ match.score.fullTime.away }}
+                    </strong>
+                  } @else {
+                    <small>{{ match.utcDate | date:'MM.dd' }}</small>
+                  }
+                </div>
+
+                <div class="side right">
+                  <span>{{ match.awayTeam.shortName || match.awayTeam.name }}</span>
+                  <img [src]="match.awayTeam.crest" width="20">
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+    } @else {
+      <p class="empty-text">Select a team to see their matches.</p>
+    }
+  </div>
+
+</div>

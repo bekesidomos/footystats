@@ -1,0 +1,53 @@
+.league-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.league-select {
+  width: 250px;
+  margin: 1rem auto;
+  display: block;
+}
+
+button[mat-flat-button] {
+  margin-top: 1rem;
+}
+
+.league-table {
+  width: 80%;
+  margin: 1.5rem auto;
+  border-collapse: collapse;
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+  border-radius: 0.5rem;
+}
+
+.league-table th {
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  font-weight: 600;
+}
+
+.league-table th,
+.league-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  text-align: center;
+}
+
+.league-table tr:hover {
+  background-color: var(--mat-sys-surface-container-high);
+  transition: background-color 0.2s ease;
+}
+
+//uaz mint a match-detailsnel
+.back-button {
+  margin: 1rem;
+  color: #1976d2;
+  transition: transform 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    transform: scale(1.15);
+    color: #0d47a1;
+  }
+}

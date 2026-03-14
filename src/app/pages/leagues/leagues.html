@@ -1,0 +1,60 @@
+<h2>League Overview</h2>
+
+@if (!selectedLeague) {
+  <div class="league-container">
+    <mat-form-field appearance="outline" class="league-select">
+      <mat-label>Select League</mat-label>
+      
+      <mat-select [(value)]="selectedLeague" (selectionChange)="selectLeague($event.value)">
+        @for (league of leagues; track league.code) {
+          <mat-option [value]="league">
+            {{ league.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+} @else {
+  <div class="league-details">
+    <button mat-icon-button class="back-button" (click)="clearSelection()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <h3>{{ selectedLeague.name }} - Table</h3>
+
+    @if (isLoading) {
+      <div style="text-align: center; margin-top: 2rem; opacity: 0.6;">
+        <p>Loading standings...</p>
+      </div>
+    } @else {
+      @if (selectedStandings.length > 0) {
+        <table class="league-table mat-elevation-z1">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th style="text-align: left; padding-left: 20px;">Team</th>
+              <th>P</th> <th>W</th> <th>D</th> <th>L</th> <th>Pts</th> </tr>
+          </thead>
+          <tbody>
+            @for (row of selectedStandings; track row.team.id) {
+              <tr>
+                <td>{{ row.position }}</td>
+                
+                <td style="text-align: left; display: flex; align-items: center; gap: 10px; border-bottom: none;">
+                  <img [src]="row.team.crest" width="24" height="24" alt="crest" style="object-fit: contain;">
+                  {{ row.team.name }}
+                </td>
+                
+                <td>{{ row.playedGames }}</td>
+                <td>{{ row.won }}</td>
+                <td>{{ row.draw }}</td>
+                <td>{{ row.lost }}</td>
+                <td><strong>{{ row.points }}</strong></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    }
+  </div>
+}

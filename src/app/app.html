@@ -1,0 +1,57 @@
+<mat-toolbar color="primary" class="navbar" role="navigation">
+  <div class="nav-left">
+    <img src="/logo.png" alt="FootyStats Logo" class="app-logo" />
+
+    <a
+      mat-icon-button
+      color="primary"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>home</mat-icon>
+    </a>
+
+    <a
+      mat-icon-button
+      color="primary"
+      routerLink="/league"
+      routerLinkActive="active"
+    >
+      <mat-icon>emoji_events</mat-icon>
+    </a>
+
+    <a
+      mat-icon-button
+      color="primary"
+      routerLink="/favourites"
+      routerLinkActive="active"
+    >
+      <mat-icon>favorite</mat-icon>
+    </a>
+  </div>
+
+  <div class="nav-right">
+    
+    <ng-container *ngIf="authService.user$ | async as user; else loginButton">
+      
+      <span class="user-email">{{ user.email }}</span>
+
+      <button mat-icon-button (click)="logout()" aria-label="Logout" title="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+
+    </ng-container>
+
+    <ng-template #loginButton>
+      <a mat-icon-button routerLink="/auth" routerLinkActive="active" aria-label="Login" title="Login">
+        <mat-icon>login</mat-icon>
+      </a>
+    </ng-template>
+
+  </div>
+</mat-toolbar>
+
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

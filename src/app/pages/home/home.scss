@@ -1,0 +1,224 @@
+@use "sass:color";
+
+$primary-color: #3f51b5; 
+$card-radius: 16px;
+$spacing-standard: 1rem;
+$transition-speed: 0.25s;
+
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+}
+
+@mixin mobile {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+.home-header {
+  text-align: center;
+  margin-top: 3rem;
+  color: var(--mat-sys-on-surface);
+
+  .hero-brand {
+    @include flex-center(0.8rem); 
+    
+    user-select: none;
+    margin-bottom: 0.5rem;
+
+    .logo-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      color: var(--mat-sys-primary);
+    }
+
+    h1 {
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-size: 3rem;
+      color: var(--mat-sys-primary);
+      margin: 0;
+      line-height: 1;
+      letter-spacing: -0.5px;
+
+      .highlight {
+        color: color.adjust(#444, $lightness: 20%);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  
+  @include mobile {
+    margin-top: 2rem;
+    .hero-brand h1 { font-size: 2.2rem; }
+  }
+}
+
+.filter-section {
+  @include flex-center; 
+  margin-top: 1.5rem;
+  
+  .league-filter {
+    width: 300px;
+    max-width: 90%;
+  }
+}
+
+.matches-section {
+  text-align: center;
+  margin-top: 3rem;
+
+  h2 {
+    font-weight: 600;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.matches-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  justify-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 0 $spacing-standard; 
+}
+
+.match-card {
+  width: 100%;
+  max-width: 320px;
+  border-radius: $card-radius; 
+  background: linear-gradient(
+    180deg,
+    var(--mat-sys-surface-container-high) 0%,
+    var(--mat-sys-surface-container) 100%
+  );
+  color: var(--mat-sys-on-surface);
+  transition: transform $transition-speed ease, box-shadow $transition-speed ease; 
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  mat-card-content {
+    padding: 1rem 0.75rem;
+  }
+  
+  @include mobile {
+    max-width: 95%;
+  }
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--mat-sys-primary);
+  margin-bottom: 0.8rem;
+}
+
+.team-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 42%;
+  min-width: 0; 
+  
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+}
+
+.team-side.away {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.score-board {
+  @include flex-center(8px); 
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--mat-sys-on-surface);
+  background-color: var(--mat-sys-surface-container-highest);
+  padding: 4px 12px;
+  border-radius: 8px;
+  min-width: 60px;
+
+  .divider {
+    opacity: 0.5;
+    font-weight: 400;
+  }
+}
+
+.team-crest {
+  width: 30px;
+  height: 30px;
+  min-width: 30px; 
+  object-fit: contain;
+  display: block;
+}
+
+.vs-icon {
+  margin: 0 4px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.match-info {
+  margin-top: 0.8rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1); 
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  .competition-name {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .match-date {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+  
+  .status-finished {
+    color: var(--mat-sys-primary);
+    font-weight: 600;
+  }
+}
+
+.loading-state,
+.empty-state {
+  text-align: center;
+  margin-top: 2rem;
+  opacity: 0.6;
+  font-size: 1rem;
+}

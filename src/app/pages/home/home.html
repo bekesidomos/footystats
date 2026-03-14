@@ -1,0 +1,92 @@
+<section class="home-header">
+  <div class="hero-brand">
+    <mat-icon class="logo-icon">sports_soccer</mat-icon>
+    <h1>Footy<span class="highlight">Stats</span></h1>
+  </div>
+  <p class="subtitle">Track leagues, teams, and your favourites — all in one place.</p>
+</section>
+
+<section class="filter-section">
+  <mat-form-field appearance="outline" class="league-filter">
+    <mat-label>Filter by League</mat-label>
+    <mat-select [(ngModel)]="selectedLeague" (selectionChange)="onFilterChange()">
+      @for (league of leagues; track league.code) {
+        <mat-option [value]="league.code">{{ league.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</section>
+
+@if (isLoading()) {
+  <div class="loading-state"><p>Loading match data...</p></div>
+} @else {
+
+  <section class="matches-section">
+    <h2>Recent Results (Last 7 Days)</h2>
+    <div class="matches-container">
+      @for (match of filteredPast; track match.id) {
+        <mat-card class="match-card mat-elevation-z2" [routerLink]="['/match', match.id]" style="cursor: pointer;">
+          <mat-card-content>
+            <div class="teams">
+              <div class="team-side home">
+                <img [src]="match.homeTeam.crest" class="team-crest" alt="Home">
+                <span [title]="match.homeTeam.name">{{ match.homeTeam.shortName || match.homeTeam.name }}</span>
+              </div>
+
+              <div class="score-board">
+                <span class="score">{{ match.score.fullTime.home }}</span>
+                <span class="divider">-</span>
+                <span class="score">{{ match.score.fullTime.away }}</span>
+              </div>
+
+              <div class="team-side away">
+                <span [title]="match.awayTeam.name">{{ match.awayTeam.shortName || match.awayTeam.name }}</span>
+                <img [src]="match.awayTeam.crest" class="team-crest" alt="Away">
+              </div>
+            </div>
+            
+            <div class="match-info">
+              <span class="competition-name">{{ match.competition.name }}</span>
+              <span class="match-date status-finished">
+                {{ match.status | statusTranslate }} - {{ match.utcDate | date:'MMM d' }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <p class="empty-state">No matches found for this league in the last 7 days.</p>
+      }
+    </div>
+  </section>
+
+  <section class="matches-section">
+    <h2>Upcoming Fixtures</h2>
+    <div class="matches-container">
+      @for (match of filteredUpcoming; track match.id) {
+        <mat-card class="match-card mat-elevation-z2" [routerLink]="['/match', match.id]" style="cursor: pointer;">
+          <mat-card-content>
+            <div class="teams">
+              <div class="team-side home">
+                <img [src]="match.homeTeam.crest" class="team-crest">
+                <span>{{ match.homeTeam.shortName || match.homeTeam.name }}</span>
+              </div>
+              
+              <mat-icon class="vs-icon" color="primary">schedule</mat-icon>
+
+              <div class="team-side away">
+                <span>{{ match.awayTeam.shortName || match.awayTeam.name }}</span>
+                <img [src]="match.awayTeam.crest" class="team-crest">
+              </div>
+            </div>
+            <div class="match-info">
+              <span class="competition-name">{{ match.competition.name }}</span>
+              <span class="match-date">{{ match.utcDate | date:'yyyy.MM.dd - HH:mm' }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <p class="empty-state">No upcoming matches scheduled for this league.</p>
+      }
+    </div>
+  </section>
+}
